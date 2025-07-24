@@ -117,6 +117,7 @@ Authentication Flow:
    ```
 
 3. **Setup Backend**
+(Should have MongoDD installed)
    ```bash
    cd backend
    npm install
@@ -137,6 +138,12 @@ Authentication Flow:
    - Open your browser's extension management page
    - Enable Developer Mode
    - Load unpacked extension from the `extension/` directory
+
+### Usage
+1. Open the URL genrated upon deploying the frontend on ICP Blockchain or directly open `http://uxrrr-q7777-77774-qaaaq-cai.localhost:4943/`
+2. Now click on the installed browser extension icon to open it
+3. Register as a new User. After successfull registeration go back to Login screen in the extension and use your username/email to login.
+
 
 ## 👥 Team
 
