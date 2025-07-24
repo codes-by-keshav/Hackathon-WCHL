@@ -13,10 +13,10 @@ const Hero = () => {
         {/* Logo/Brand */}
         <div>
           <h1 className="hero-title font-heading neon-text">
-            Quantum Safe
+            QuantaVerse
           </h1>
           <p className="hero-subtitle text-gray-400 font-light tracking-wider">
-            AI-Powered Post-Quantum Secure Social Media HUI HUI
+            AI-Powered Post-Quantum Secure Social Media
           </p>
         </div>
 
