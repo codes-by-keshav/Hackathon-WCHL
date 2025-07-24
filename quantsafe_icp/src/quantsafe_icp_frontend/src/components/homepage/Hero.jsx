@@ -41,21 +41,21 @@ const Hero = () => {
           <FeatureCard
             iconSrc="/img/cryptography.png"
             title="Quantum Secure"
-            description="Protected against future quantum computer attacks using post-quantum cryptographic algorithms like Kyber and Dilithium"
+            description="Protected against quantum attacks using PQC algorithms like Kyber and Dilithium"
             color="text-white"
           />
           
           <FeatureCard
             iconSrc="/img/artificial-intelligence.png"
             title="AI Moderation"
-            description="Advanced bot detection, hate speech filtering, and content moderation powered by cutting-edge machine learning algorithms"
+            description="Advanced bot detection, hate-speech filtering, and content moderation powered by ML algorithms"
             color="text-white"
           />
           
           <FeatureCard
             iconSrc="/img/services.png"
             title="Mental Wellness"
-            description="Smart feed curation and depression detection algorithms to promote positive mental health and emotional wellbeing"
+            description="Smart feed and emotion detection for positive mental health"
             color="text-white"
           />
         </div>
