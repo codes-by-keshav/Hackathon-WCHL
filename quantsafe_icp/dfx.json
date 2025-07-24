@@ -1,0 +1,18 @@
+{
+  "canisters": {
+    "quantsafe_icp_frontend": {
+      "source": [
+        "src/quantsafe_icp_frontend/dist"
+      ],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}

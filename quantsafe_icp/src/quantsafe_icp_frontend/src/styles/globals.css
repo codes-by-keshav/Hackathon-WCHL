@@ -1,0 +1,529 @@
+@import url('https://fonts.googleapis.com/css2?family=Cookie&family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* Tailwind Directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom CSS Variables */
+@layer base {
+  :root {
+    --font-heading: "Cookie", cursive;
+    --font-body: "Exo 2", sans-serif;
+
+    --color-bg-primary: #0a0a0a;
+    --color-bg-secondary: #111111;
+    --color-bg-tertiary: #1a1a1a;
+    --color-text-primary: #e5e5e5;
+    --color-text-secondary: #a0a0a0;
+    --color-text-muted: #666666;
+    --color-accent-blue: #0ea5e9;
+    --color-accent-cyan: #06b6d4;
+    --color-accent-teal: #14b8a6;
+    --color-orange: #f97316;
+    --color-red: #ef4444;
+    --color-green: #22c55e;
+  }
+
+  /* Base Styles */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    line-height: 1.2;
+  }
+}
+
+/* Custom Matrix Cursor */
+/* .matrix-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  background: rgba(6, 182, 212, 0.3);
+  border: 2px solid rgba(6, 182, 212, 0.8);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  transition: all 0.1s ease;
+} */
+
+@layer components {
+  .matrix-trail {
+    position: fixed;
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    font-weight: bold;
+    color: rgba(6, 182, 212, 0.6);
+    pointer-events: none;
+    z-index: 9998;
+    animation: matrixFade 3s ease-out forwards;
+  }
+
+  /* Dark Artistic Background */
+  .animated-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background:
+      radial-gradient(circle at 20% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(14, 165, 233, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, rgba(34, 197, 94, 0.05) 0%, transparent 50%),
+      linear-gradient(135deg, #0a0a0a 0%, #111111 50%, #0a0a0a 100%);
+    animation: subtleShift 20s ease-in-out infinite;
+  }
+
+
+  /* Enhanced Matrix-like Floating Particles */
+  .particle {
+    position: absolute;
+    background: rgba(6, 182, 212, 0.15);
+    border: 1px solid rgba(6, 182, 212, 0.4);
+    border-radius: 2px;
+    animation: matrixFloat 6s linear infinite;
+  }
+
+
+  /* Interactive Feature Cards */
+  .feature-card {
+    background: rgba(17, 17, 17, 0.8);
+    border: 1px solid rgba(6, 182, 212, 0.2);
+    backdrop-filter: blur(10px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    height: 200px;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-accent-cyan), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .feature-card:hover::before {
+    left: 100%;
+  }
+
+  .feature-card:hover {
+    border-color: rgba(6, 182, 212, 0.4);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 40px rgba(6, 182, 212, 0.15);
+  }
+
+  .feature-card-content {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .feature-card-front {
+    transition: all 0.4s ease;
+  }
+
+  .feature-card-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s ease;
+  }
+
+  .feature-card:hover .feature-card-front {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  .feature-card:hover .feature-card-back {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .feature-card h3 {
+    font-family: var(--font-body) !important;
+    /* Force Exo2 for feature card h3 */
+  }
+
+  /* Sophisticated Button Styles */
+  .cyber-button {
+    position: relative;
+    background: transparent;
+    border: 2px solid var(--color-accent-cyan);
+    color: var(--color-accent-cyan);
+    padding: 1rem 2.5rem;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 100%, 20px 100%);
+  }
+
+  .cyber-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.2), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .cyber-button:hover::before {
+    left: 100%;
+  }
+
+  .cyber-button:hover {
+    background: rgba(6, 182, 212, 0.1);
+    box-shadow:
+      0 0 20px rgba(6, 182, 212, 0.3),
+      inset 0 0 20px rgba(6, 182, 212, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .cyber-button:active {
+    transform: translateY(0);
+  }
+
+  /* Alternative Button Style */
+  .quantum-button {
+    background: linear-gradient(45deg, transparent, rgba(6, 182, 212, 0.1), transparent);
+    border: 1px solid rgba(6, 182, 212, 0.3);
+    color: var(--color-text-primary);
+    padding: 1rem 2rem;
+    border-radius: 0;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .quantum-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.2) 0%, transparent 70%);
+    transition: all 0.3s ease;
+    transform: translate(-50%, -50%);
+  }
+
+  .quantum-button:hover::after {
+    width: 300px;
+    height: 300px;
+  }
+
+  /* Neon Text Effect - Subtle */
+  .neon-text {
+    color: var(--color-text-primary);
+    text-shadow:
+      0 0 10px rgba(6, 182, 212, 0.3),
+      0 0 20px rgba(6, 182, 212, 0.2),
+      0 0 30px rgba(6, 182, 212, 0.1);
+    animation: subtleGlow 3s ease-in-out infinite alternate;
+  }
+
+  .cyber-dialog {
+    position: relative;
+    background: linear-gradient(135deg,
+        rgba(10, 10, 10, 0.95) 0%,
+        rgba(17, 17, 17, 0.98) 50%,
+        rgba(10, 10, 10, 0.95) 100%);
+    backdrop-filter: blur(20px);
+    box-shadow:
+      0 0 50px rgba(6, 182, 212, 0.2),
+      inset 0 0 50px rgba(6, 182, 212, 0.05);
+  }
+
+  .cyber-dialog::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg,
+        transparent,
+        rgba(6, 182, 212, 0.1),
+        transparent,
+        rgba(6, 182, 212, 0.1),
+        transparent);
+    z-index: -1;
+    animation: borderGlow 3s linear infinite;
+  }
+
+
+  .cyber-input {
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(102, 102, 102, 0.5);
+    transition: all 0.3s ease;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 100%, 10px 100%);
+  }
+
+  .cyber-input:focus {
+    border-color: var(--color-accent-cyan);
+    box-shadow:
+      0 0 20px rgba(6, 182, 212, 0.2),
+      inset 0 0 20px rgba(6, 182, 212, 0.05);
+    outline: none;
+  }
+
+  .cyber-button-primary {
+    clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 100%, 15px 100%);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+
+  .cyber-button-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.3), transparent);
+    transition: left 0.5s ease;
+    z-index: 0;
+  }
+
+  .cyber-button-primary:hover::before {
+    left: 100%;
+  }
+
+  .cyber-button-secondary {
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 100%, 10px 100%);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+  }
+
+  .cyber-alert {
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 100%, 8px 100%);
+    backdrop-filter: blur(10px);
+  }
+
+  /* Loading Spinner */
+  .cyber-spinner {
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(6, 182, 212, 0.2);
+    border-left: 2px solid var(--color-accent-cyan);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+
+  /* Quantum Circuit Effect */
+  .quantum-circuit {
+    position: relative;
+  }
+
+  .quantum-circuit::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+      linear-gradient(90deg, rgba(6, 182, 212, 0.05) 1px, transparent 1px),
+      linear-gradient(rgba(6, 182, 212, 0.05) 1px, transparent 1px);
+    background-size: 30px 30px;
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  /* Spacing Utilities */
+  .section-padding {
+    padding: 4rem 1rem;
+  }
+
+  .element-spacing>*+* {
+    margin-top: 2rem;
+  }
+
+  .button-group {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* Always 3 columns */
+    gap: 2rem;
+    margin-top: 4rem;
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+
+  /* Responsive Typography */
+  .hero-title {
+    font-size: clamp(3rem, 8vw, 6rem);
+    margin-bottom: 1rem;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    margin-bottom: 1rem;
+  }
+
+  .hero-description {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    margin-bottom: 3rem;
+  }
+}
+
+/* Restore cursor for interactive elements */
+button,
+a,
+.clickable {
+  cursor: pointer !important;
+}
+
+@keyframes matrixFade {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+@media (max-width: 768px) {
+  .feature-grid {
+    grid-template-columns: 1fr;
+    /* Stack on mobile */
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .feature-grid {
+    gap: 1rem;
+    /* Smaller gap on tablets */
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes subtleGlow {
+  from {
+    text-shadow:
+      0 0 10px rgba(6, 182, 212, 0.3),
+      0 0 20px rgba(6, 182, 212, 0.2),
+      0 0 30px rgba(6, 182, 212, 0.1);
+  }
+
+  to {
+    text-shadow:
+      0 0 15px rgba(6, 182, 212, 0.4),
+      0 0 25px rgba(6, 182, 212, 0.3),
+      0 0 35px rgba(6, 182, 212, 0.2);
+  }
+}
+
+@keyframes borderGlow {
+  0% {
+    background-position: 0% 0%;
+  }
+
+  100% {
+    background-position: 200% 200%;
+  }
+}
+
+@keyframes matrixFloat {
+  0% {
+    transform: translateY(-50vh) rotate(0deg);
+    opacity: 0;
+  }
+
+  5% {
+    opacity: 1;
+  }
+
+  95% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(150vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes subtleShift {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
+}

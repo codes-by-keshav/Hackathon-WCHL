@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Safe Authenticator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-heading: "Cookie", cursive;
+            --font-body: "Exo 2", sans-serif;
+            --color-bg-primary: #0a0a0a;
+            --color-bg-secondary: #111111;
+            --color-text-primary: #e5e5e5;
+            --color-text-secondary: #a0a0a0;
+            --color-accent-cyan: #06b6d4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 350px;
+            min-height: 500px;
+            font-family: var(--font-body);
+            background: linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
+            color: var(--color-text-primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .background-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(6, 182, 212, 0.05) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            border-bottom: 1px solid rgba(6, 182, 212, 0.2);
+            background: rgba(6, 182, 212, 0.05);
+        }
+
+        .header h1 {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            color: var(--color-accent-cyan);
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+        }
+
+        .header p {
+            font-size: 0.85rem;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .content {
+            padding: 25px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            background: transparent;
+            border: none;
+            color: var(--color-text-secondary);
+            font-family: var(--font-body);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        .tab.active {
+            color: var(--color-accent-cyan);
+            border-bottom: 2px solid var(--color-accent-cyan);
+        }
+
+        .form-container {
+            display: none;
+        }
+
+        .form-container.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--color-text-secondary);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(17, 17, 17, 0.8);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            color: var(--color-text-primary);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 100%, 8px 100%);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--color-accent-cyan);
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+        }
+
+        .status-section {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: rgba(17, 17, 17, 0.8);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 100%, 10px 100%);
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--color-accent-cyan);
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .button {
+            width: 100%;
+            padding: 12px 20px;
+            background: transparent;
+            border: 2px solid var(--color-accent-cyan);
+            color: var(--color-accent-cyan);
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 100%, 15px 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .button:hover::before {
+            left: 100%;
+        }
+
+        .button:hover {
+            background: rgba(6, 182, 212, 0.1);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            display: none;
+        }
+
+        .status.success {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.5);
+            color: #22c55e;
+        }
+
+        .status.error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            color: #ef4444;
+        }
+
+        .loading {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(6, 182, 212, 0.2);
+            border-top: 2px solid var(--color-accent-cyan);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .info-section {
+            padding: 15px;
+            background: rgba(17, 17, 17, 0.6);
+            border: 1px solid rgba(6, 182, 212, 0.1);
+            clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 100%, 8px 100%);
+            margin-top: 20px;
+        }
+
+        .info-section h3 {
+            color: var(--color-accent-cyan);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-section p {
+            font-size: 0.8rem;
+            color: var(--color-text-secondary);
+            line-height: 1.4;
+        }
+
+        .tech-indicators {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .tech-indicator {
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--color-accent-cyan);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-effect"></div>
+    
+    <div class="header">
+        <h1>🔐 Quantum Safe</h1>
+        <p>Post-Quantum Authenticator</p>
+    </div>
+
+    <div class="content">
+        <div class="status-section">
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span id="status-text">Extension Active</span>
+            </div>
+            <p id="status-description">Ready for quantum-safe authentication</p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="tabs">
+            <button class="tab active" id="loginTab">Login</button>
+            <button class="tab" id="registerTab">Register</button>
+        </div>
+
+        <!-- Login Form -->
+        <div class="form-container active" id="loginForm">
+            <div class="form-group">
+                <label for="loginIdentifier">Username or Email</label>
+                <input type="text" id="loginIdentifier" placeholder="Enter username or email">
+            </div>
+            <div class="loading" id="loginLoading">
+                <div class="spinner"></div>
+                <span>Authenticating...</span>
+            </div>
+            <div class="status" id="loginStatus"></div>
+            <button class="button" id="loginBtn">🔑 Login</button>
+        </div>
+
+        <!-- Registration Form -->
+        <div class="form-container" id="registerForm">
+            <div class="form-group">
+                <label for="registerUsername">Username</label>
+                <input type="text" id="registerUsername" placeholder="Choose a username">
+            </div>
+            <div class="form-group">
+                <label for="registerEmail">Email</label>
+                <input type="email" id="registerEmail" placeholder="Enter your email">
+            </div>
+            <div class="loading" id="registerLoading">
+                <div class="spinner"></div>
+                <span>Creating account...</span>
+            </div>
+            <div class="status" id="registerStatus"></div>
+            <button class="button" id="registerBtn">🚀 Register</button>
+        </div>
+
+        <!-- Logout Button (hidden by default) -->
+        <button class="button hidden" id="logout-btn">🚪 Logout</button>
+
+        <div class="info-section">
+            <h3>🛡️ Security Status</h3>
+            <p>Your private keys are securely stored locally. No data leaves your device without encryption.</p>
+            
+            <div class="tech-indicators">
+                <div class="tech-indicator">Kyber-512</div>
+                <div class="tech-indicator">Dilithium-2</div>
+                <div class="tech-indicator">AES-256</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

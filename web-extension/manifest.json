@@ -1,0 +1,68 @@
+{
+  "manifest_version": 3,
+  "name": "Quantum Safe Authenticator",
+  "version": "1.0.0",
+  "description": "Post-Quantum Cryptography authenticator for Quantum Safe Social Media",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "tabs"
+  ],
+  "host_permissions": [
+    "http://localhost:3000/*",
+    "http://localhost:5000/*",
+    "http://localhost:*/*",
+    "https://localhost:*/*", 
+    "http://127.0.0.1:*/*",
+    "https://*.localhost:*/*",
+    "http://*.localhost:*/*",
+    "https://*.ic0.app/*",
+    "https://*.raw.ic0.app/*"
+  ],
+  "background": {
+    "service_worker": "src/background/background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://localhost:3000/*",
+        "http://localhost:5173/*",
+        "https://localhost:5173/*",
+        "http://127.0.0.1:5173/*",
+        "http://localhost:5000/*",
+        "http://localhost:*/*",
+        "http://127.0.0.1:*/*",
+        "https://*.localhost:*/*",
+        "http://*.localhost:*/*",
+        "https://*.ic0.app/*",
+        "https://*.raw.ic0.app/*"
+      ],
+      "js": ["src/content/content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_title": "Quantum Safe Authenticator"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["src/utils/*"],
+      "matches": [
+        "http://localhost:3000/*",
+        "http://localhost:*/*",
+        "http://127.0.0.1:*/*",
+        "https://*.localhost:*/*",
+        "http://*.localhost:*/*",
+        "https://*.ic0.app/*",
+        "https://*.raw.ic0.app/*"  
+      ]
+    }
+  ]
+}
