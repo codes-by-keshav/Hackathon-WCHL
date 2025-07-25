@@ -6,10 +6,6 @@ QuantaVerse is a revolutionary social media platform built on the Internet Compu
 
 <img width="1920" height="1076" alt="Screenshot From 2025-07-25 01-27-28" src="https://github.com/user-attachments/assets/6e6e3829-e647-41a7-8e20-f2be3c1471da" />
 
-<img width="351" height="595" alt="Screenshot From 2025-07-25 01-28-05" src="https://github.com/user-attachments/assets/14967d7e-4796-467e-92c4-8f22e8d9f5b2" />
-
-<img width="1903" height="1080" alt="Screenshot From 2025-07-25 01-28-45" src="https://github.com/user-attachments/assets/1e4c7b5d-e5b6-49d1-8a1c-8bbd1fccdeb9" />
-
 
 ## 🎯 Problem Statement
 
@@ -25,7 +21,11 @@ This ensures our platform remains secure even in the post-quantum era.
 
 ## 🎥 Demo
 
-[![QuantaVerse Demo](https://img.shields.io/badge/Watch-Demo%20Video-red?style=for-the-badge&logo=youtube)](YOUTUBE_DEMO_LINK_HERE)
+[![QuantaVerse Demo](https://img.shields.io/badge/Watch-Demo%20Video-red?style=for-the-badge&logo=youtube)](https://youtu.be/1hvRx8BrWV8)
+
+[![QuantaVerse PPT](https://img.shields.io/badge/View-Presentation-blue?style=for-the-badge&logo=microsoftpowerpoint)](https://docs.google.com/presentation/d/1xH5ez_PYmC9uwfU_s2NwZqnBChf1ilNv7WizVkC7yaA/edit?usp=sharing)
+
+
 
 ## 🏗️ Architecture
 
