@@ -4,6 +4,13 @@
 
 QuantaVerse is a revolutionary social media platform built on the Internet Computer Protocol (ICP) blockchain that addresses the critical vulnerability of traditional blockchain systems to quantum computing attacks. While most blockchains claim security through cryptography, they rely on ECDSA which is vulnerable to quantum attacks. QuantaVerse fills this gap by implementing Post-Quantum Cryptography (PQC) algorithms.
 
+<img width="1920" height="1076" alt="Screenshot From 2025-07-25 01-27-28" src="https://github.com/user-attachments/assets/6e6e3829-e647-41a7-8e20-f2be3c1471da" />
+
+<img width="351" height="595" alt="Screenshot From 2025-07-25 01-28-05" src="https://github.com/user-attachments/assets/14967d7e-4796-467e-92c4-8f22e8d9f5b2" />
+
+<img width="1903" height="1080" alt="Screenshot From 2025-07-25 01-28-45" src="https://github.com/user-attachments/assets/1e4c7b5d-e5b6-49d1-8a1c-8bbd1fccdeb9" />
+
+
 ## 🎯 Problem Statement
 
 Current blockchain systems use ECDSA (Elliptic Curve Digital Signature Algorithm) which, while secure against classical computers, can be broken by sufficiently powerful quantum computers using Shor's algorithm. This poses a significant threat to the security of blockchain networks and user data.
