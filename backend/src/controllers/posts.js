@@ -348,27 +348,99 @@ class PostController {
         }
     }
 
-    // Like post
-    async likePost(req, res) {
+    async getPostLikeStatus(req, res) {
         try {
             const postId = req.params.id;
             const userId = req.user.userId;
+
+            // Handle development user ObjectId
+            let validUserId = userId;
+            if (userId === 'dev_user_123') {
+                validUserId = new mongoose.Types.ObjectId('507f1f77bcf86cd799439011');
+            } else if (!mongoose.Types.ObjectId.isValid(userId)) {
+                validUserId = new mongoose.Types.ObjectId();
+            }
 
             const post = await Post.findById(postId);
             if (!post) {
                 return res.status(404).json({ error: 'Post not found' });
             }
 
-            // Update last viewed when interacting with post
-            await Post.findByIdAndUpdate(postId, {
-                $inc: { 'engagement.likes': 1 },
-                $set: { lastViewed: new Date() }
-            });
+            const hasLiked = post.engagement.likedBy.includes(validUserId);
 
-            res.json({ success: true, message: 'Post liked' });
+            res.json({ 
+                success: true, 
+                liked: hasLiked,
+                likesCount: post.engagement.likes,
+                currentUserId: validUserId
+            });
         } catch (error) {
-            console.error('Like post error:', error);
-            res.status(500).json({ error: 'Failed to like post' });
+            console.error('Get like status error:', error);
+            res.status(500).json({ error: 'Failed to get like status' });
+        }
+    }
+
+    // Like post
+    async likePost(req, res) {
+        try {
+            const postId = req.params.id;
+            const userId = req.user.userId;
+
+            // Handle development user ObjectId
+            let validUserId = userId;
+            if (userId === 'dev_user_123') {
+                validUserId = new mongoose.Types.ObjectId('507f1f77bcf86cd799439011');
+            } else if (!mongoose.Types.ObjectId.isValid(userId)) {
+                validUserId = new mongoose.Types.ObjectId();
+            }
+
+            const post = await Post.findById(postId);
+            if (!post) {
+                return res.status(404).json({ error: 'Post not found' });
+            }
+
+            const hasLiked = post.engagement.likedBy.includes(validUserId);
+
+            let updateOperation;
+            let message;
+            let liked;
+
+            if (hasLiked) {
+                // Unlike the post
+                updateOperation = {
+                    $pull: { 'engagement.likedBy': validUserId },
+                    $inc: { 'engagement.likes': -1 },
+                    $set: { lastViewed: new Date() }
+                };
+                message = 'Post unliked';
+                liked = false;
+            } else {
+                // Like the post
+                updateOperation = {
+                    $addToSet: { 'engagement.likedBy': validUserId },
+                    $inc: { 'engagement.likes': 1 },
+                    $set: { lastViewed: new Date() }
+                };
+                message = 'Post liked';
+                liked = true;
+            }
+
+            const updatedPost = await Post.findByIdAndUpdate(
+                postId,
+                updateOperation,
+                { new: true }
+            );
+
+            res.json({ 
+                success: true, 
+                message,
+                liked,
+                likesCount: updatedPost.engagement.likes,
+                currentUserId: validUserId
+            });
+        } catch (error) {
+            console.error('Like/unlike post error:', error);
+            res.status(500).json({ error: 'Failed to like/unlike post' });
         }
     }
 
@@ -392,6 +464,28 @@ class PostController {
         } catch (error) {
             console.error('Share post error:', error);
             res.status(500).json({ error: 'Failed to share post' });
+        }
+    }
+
+    async getPostForView(req, res) {
+        try {
+            const post = await Post.findById(req.params.id)
+                .populate('userId', 'username');
+            
+            if (!post) {
+                return res.status(404).json({ error: 'Post not found' });
+            }
+
+            // Increment view count
+            await Post.findByIdAndUpdate(req.params.id, {
+                $inc: { 'engagement.views': 1 },
+                $set: { lastViewed: new Date() }
+            });
+
+            res.json({ success: true, post });
+        } catch (error) {
+            console.error('Get post for view error:', error);
+            res.status(500).json({ error: 'Failed to get post' });
         }
     }
 

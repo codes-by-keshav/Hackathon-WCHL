@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Heart, MessageCircle, Share2, Eye, MoreHorizontal, User } from 'lucide-react';
 import extensionBridge from '../../utils/extensionBridge';
 import { API_BASE_URL } from '../../config/api';
@@ -8,6 +8,53 @@ const PostCard = ({ post, onUpdate, onCommentsClick }) => {
   const [likeCount, setLikeCount] = useState(post.engagement.likes);
   const [loading, setLoading] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState(null);
+
+  // Check like status on component mount
+  useEffect(() => {
+    const checkLikeStatus = async () => {
+      try {
+        const token = await extensionBridge.getAuthToken();
+        if (!token) return;
+
+        const response = await fetch(`${API_BASE_URL}/posts/${post._id}/like-status`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const data = await response.json();
+        
+        if (data.success) {
+          setLiked(data.liked);
+          setLikeCount(data.likesCount);
+          setCurrentUserId(data.currentUserId);
+        }
+      } catch (error) {
+        console.error('Error checking like status:', error);
+        // Fallback: check if current user ID is in likedBy array
+        try {
+          const userResponse = await fetch(`${API_BASE_URL}/user/profile`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+          const userData = await userResponse.json();
+          if (userData.success && userData.user) {
+            const userId = userData.user._id;
+            setCurrentUserId(userId);
+            setLiked(post.engagement.likedBy?.includes(userId) || false);
+          }
+        } catch (fallbackError) {
+          console.error('Fallback like status check failed:', fallbackError);
+        }
+      }
+    };
+
+    checkLikeStatus();
+  }, [post._id, post.engagement.likedBy]);
 
   const formatTimeAgo = (timestamp) => {
     const now = new Date();
@@ -42,29 +89,24 @@ const PostCard = ({ post, onUpdate, onCommentsClick }) => {
     return emojiMap[emotion] || '😐';
   };
 
-  // FIXED: Corrected helper function to avoid double /api
   const getImageUrl = (url) => {
     if (!url) return null;
     
     console.log('🖼️ Processing image URL:', url);
     console.log('🔗 API_BASE_URL:', API_BASE_URL);
     
-    // If URL starts with /api/upload/image/, construct the full URL
     if (url.startsWith('/api/upload/image/')) {
-      // API_BASE_URL already includes /api, so we need to remove it from the url
       const urlWithoutApi = url.replace('/api', '');
       const fullUrl = `${API_BASE_URL}${urlWithoutApi}`;
       console.log('🔗 Constructed full URL:', fullUrl);
       return fullUrl;
     }
     
-    // If it's already a full URL, return as is
     if (url.startsWith('http')) {
       console.log('🔗 Using existing full URL:', url);
       return url;
     }
     
-    // Extract filename if it's a GridFS URL pattern
     const filename = url.split('/').pop();
     const fullUrl = `${API_BASE_URL}/upload/image/${filename}`;
     console.log('🔗 Constructed URL from filename:', fullUrl);
@@ -75,6 +117,13 @@ const PostCard = ({ post, onUpdate, onCommentsClick }) => {
     if (loading) return;
     
     setLoading(true);
+    
+    // Optimistic update
+    const wasLiked = liked;
+    const prevCount = likeCount;
+    setLiked(!liked);
+    setLikeCount(prev => liked ? prev - 1 : prev + 1);
+    
     try {
       const token = await extensionBridge.getAuthToken();
       const response = await fetch(`${API_BASE_URL}/posts/${post._id}/like`, {
@@ -88,20 +137,31 @@ const PostCard = ({ post, onUpdate, onCommentsClick }) => {
       const data = await response.json();
       
       if (data.success) {
-        setLiked(true);
-        setLikeCount(prev => prev + 1);
+        // Update with server response
+        setLiked(data.liked);
+        setLikeCount(data.likesCount);
         
         // Update parent component
         onUpdate({
           ...post,
           engagement: {
             ...post.engagement,
-            likes: likeCount + 1
+            likes: data.likesCount,
+            likedBy: data.liked 
+              ? [...(post.engagement.likedBy || []), currentUserId].filter(Boolean)
+              : (post.engagement.likedBy || []).filter(id => id !== currentUserId)
           }
         });
+      } else {
+        // Revert optimistic update on failure
+        setLiked(wasLiked);
+        setLikeCount(prevCount);
       }
     } catch (error) {
       console.error('Error liking post:', error);
+      // Revert optimistic update on error
+      setLiked(wasLiked);
+      setLikeCount(prevCount);
     } finally {
       setLoading(false);
     }
@@ -133,8 +193,9 @@ const PostCard = ({ post, onUpdate, onCommentsClick }) => {
           }
         });
 
-        // Copy link to clipboard
-        await navigator.clipboard.writeText(`${window.location.origin}/post/${post._id}`);
+        // Create the correct share URL
+        const shareUrl = `${window.location.origin}/dashboard?post=${post._id}`;
+        await navigator.clipboard.writeText(shareUrl);
         alert('Post link copied to clipboard!');
       }
     } catch (error) {
@@ -218,17 +279,6 @@ const PostCard = ({ post, onUpdate, onCommentsClick }) => {
         
         {/* Image */}
         {renderImage()}
-        
-        {/* Debug info for development
-        {post.mediaUrls && post.mediaUrls.length > 0 && (
-          <div className="mt-2 p-2 bg-gray-700/50 rounded text-xs text-gray-400 font-mono">
-            <div>📍 Environment: {window.location.hostname}:{window.location.port}</div>
-            <div>🔗 API Base: {API_BASE_URL}</div>
-            <div>📂 Original URL: {post.mediaUrls[0]}</div>
-            <div>🎯 Resolved URL: {getImageUrl(post.mediaUrls[0])}</div>
-            {imageError && <div className="text-red-400">❌ Image failed to load</div>}
-          </div>
-        )} */}
       </div>
 
       {/* Engagement Stats */}
@@ -260,7 +310,7 @@ const PostCard = ({ post, onUpdate, onCommentsClick }) => {
               liked ? 'fill-current scale-110' : 'group-hover:scale-110'
             }`}
           />
-          <span className="font-medium">Like</span>
+          <span className="font-medium">{liked ? 'Unlike' : 'Like'}</span>
         </button>
 
         <button
