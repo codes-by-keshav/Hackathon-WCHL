@@ -41,7 +41,7 @@ if dfx ping > /dev/null 2>&1; then
     echo "✅ ICP network is already running"
 else
     echo "🌐 Starting local ICP network..."
-    dfx start --background
+    dfx start --background --clean
 fi
 
 # Deploy to ICP

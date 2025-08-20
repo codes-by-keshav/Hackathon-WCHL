@@ -24,56 +24,40 @@
     const environment = detectEnvironment();
     console.log('🌍 Content script environment detected:', environment);
 
-    // Inject extension availability and communication logic into page
+    // Create and inject external script file instead of inline script
     const script = document.createElement('script');
-    script.textContent = `
-        console.log('🔌 Injecting Quantum Safe Extension API on: ${window.location.href}');
-        
-        window.quantumSafeExtension = {
-            isAvailable: true,
-            version: '1.0.0',
-            environment: '${environment}',
-            url: window.location.href,
-            hostname: window.location.hostname,
-            port: window.location.port
-        };
+    script.src = chrome.runtime.getURL('injected/page-script.js');
+    script.setAttribute('data-environment', environment);
+    script.setAttribute('data-url', window.location.href);
+    script.setAttribute('data-hostname', window.location.hostname);
+    script.setAttribute('data-port', window.location.port);
+    
+    // Inject at document_start to ensure it runs early
+    (document.head || document.documentElement).appendChild(script);
+    script.onload = function() {
+        script.remove();
+        console.log('✅ Quantum Safe page script injected successfully');
+    };
 
-        console.log('✅ Quantum Safe Extension API injected:', window.quantumSafeExtension);
-
-        // Listen for messages from the page
-        window.addEventListener('quantumSafeMessage', function(event) {
-            console.log('📤 Content script relaying message to background:', event.detail);
-            
-            window.postMessage({
-                source: 'quantumSafeExtension',
-                payload: event.detail
-            }, '*');
-        });
-        
-        console.log('🎧 Extension message listeners set up for environment: ${environment}');
-        
-        // Dispatch a ready event to let the frontend know extension is available
-        setTimeout(() => {
-            window.dispatchEvent(new CustomEvent('quantumSafeExtensionReady', {
-                detail: window.quantumSafeExtension
-            }));
-        }, 100);
-    `;
-    document.documentElement.appendChild(script);
-    script.remove();
-
-    // Relay messages between page and background script
+    // FIXED: Listen for messages from the injected script
     window.addEventListener('message', function(event) {
-        if (event.source !== window || !event.data || event.data.source !== 'quantumSafeExtension') return;
-
-        console.log('📨 Content script relaying to background:', event.data.payload);
+        if (event.source !== window || !event.data) return;
         
-        chrome.runtime.sendMessage(event.data.payload, function(response) {
-            console.log('📥 Background response received:', response);
-            window.dispatchEvent(new CustomEvent('quantumSafeResponse', {
-                detail: { ...response, requestId: event.data.payload.requestId }
-            }));
-        });
+        if (event.data.source === 'quantumSafeExtension' && event.data.type === 'RELAY_TO_BACKGROUND') {
+            console.log('📨 Content script relaying to background:', event.data.payload);
+            
+            chrome.runtime.sendMessage(event.data.payload, function(response) {
+                console.log('📥 Background response received:', response);
+                
+                // Send response back to page
+                window.postMessage({
+                    source: 'quantumSafeExtensionResponse',
+                    type: 'BACKGROUND_RESPONSE',
+                    requestId: event.data.payload.requestId,
+                    response: response
+                }, '*');
+            });
+        }
     });
 
     // Handle auth state changes

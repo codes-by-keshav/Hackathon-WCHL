@@ -1,32 +1,24 @@
 const express = require('express');
-const postController = require('../controllers/posts');
-const { authenticateToken } = require('../middleware/auth');
-
 const router = express.Router();
+const PostController = require('../controllers/posts');
+const authMiddleware = require('../middleware/auth');
 
-// Create new post
-router.post('/', authenticateToken, postController.createPost);
+console.log('📝 Setting up post routes...');
 
-// Get all posts (feed)
-router.get('/', postController.getAllPosts);
+// Apply auth middleware to all post routes
+router.use(authMiddleware);
 
-// Get post by ID
-router.get('/:id', postController.getPostById);
+// Post routes
+router.post('/', PostController.createPost);
+router.get('/', PostController.getAllPosts);
+router.get('/:id', PostController.getPostById);
+router.put('/:id', PostController.updatePost);
+router.delete('/:id', PostController.deletePost);
+router.post('/:id/like', PostController.likePost);
+router.post('/:id/share', PostController.sharePost);
+router.get('/:id/comments', PostController.getPostComments);
+router.post('/:id/comment', PostController.addComment);
 
-// Update post
-router.put('/:id', authenticateToken, postController.updatePost);
-
-// Delete post
-router.delete('/:id', authenticateToken, postController.deletePost);
-
-// Like/unlike post
-router.post('/:id/like', authenticateToken, postController.likePost);
-
-// Add comment to post
-router.post('/:id/comment', authenticateToken, postController.addComment);
-
-router.get('/health', (req, res) => {
-    res.json({ status: 'Posts service is healthy' });
-});
+console.log('✅ Post routes configured with auth middleware');
 
 module.exports = router;

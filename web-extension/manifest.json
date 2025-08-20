@@ -6,7 +6,8 @@
   "permissions": [
     "storage",
     "activeTab",
-    "tabs"
+    "tabs",
+    "scripting"
   ],
   "host_permissions": [
     "http://localhost:3000/*",
@@ -53,7 +54,9 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["src/utils/*"],
+      "resources": ["src/utils/*",
+    "src/popup/*",
+        "injected/page-script.js"],
       "matches": [
         "http://localhost:3000/*",
         "http://localhost:*/*",

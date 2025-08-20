@@ -70,6 +70,19 @@ const postSchema = new mongoose.Schema({
         }
     },
 
+    mediaUrls: [{
+        type: String
+    }],
+    
+    // Add image metadata tracking
+    imageFiles: [{
+        filename: String,
+        gridfsId: mongoose.Schema.Types.ObjectId,
+        uploadDate: Date,
+        size: Number,
+        contentType: String
+    }],
+
     // User's Feeling Rating
     userFeeling: {
         emotion: {
@@ -138,9 +151,19 @@ const postSchema = new mongoose.Schema({
             type: String,
             enum: ['fake_news', 'bot_content', 'toxic', 'spam', 'inappropriate']
         }]
+    },
+    lastViewed: {
+        type: Date,
+        default: Date.now
     }
 }, {
     timestamps: true
+});
+
+postSchema.pre('findOneAndUpdate', function() {
+    if (this.getUpdate().$inc && this.getUpdate().$inc['engagement.views']) {
+        this.set({ lastViewed: new Date() });
+    }
 });
 
 // Indexes

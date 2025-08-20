@@ -11,6 +11,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             sendResponse({ status: 'pong' });
             break;
 
+        case 'getAuthToken':
+            getAuthToken()
+                .then(result => sendResponse(result))
+                .catch(error => sendResponse({ token: null, error: error.message }));
+            return true;
+
         case 'register':
             console.log('🚀 Starting registration handler...');
             handleRegistration(request)
@@ -49,6 +55,24 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             return true;
     }
 });
+
+async function getAuthToken() {
+    try {
+        console.log('🔑 Background: Getting auth token...');
+        const result = await chrome.storage.local.get(['authToken', 'isAuthenticated']);
+        
+        if (result.isAuthenticated && result.authToken) {
+            console.log('✅ Background: Found valid auth token');
+            return { token: result.authToken };
+        } else {
+            console.log('⚠️ Background: No valid auth token found');
+            return { token: null };
+        }
+    } catch (error) {
+        console.error('❌ Background: Error getting auth token:', error);
+        return { token: null, error: error.message };
+    }
+}
 
 async function handleRegistration(request) {
     try {

@@ -2,7 +2,7 @@ import React from 'react';
 import AnimatedBackground from '../components/common/AnimatedBackground';
 import MatrixCursor from '../components/common/MatrixCursor';
 import Hero from '../components/homepage/Hero';
-import UserDashboard from '../components/homepage/UserDashboard';
+import Dashboard from './Dashboard';
 
 const Homepage = ({ authState }) => {
   console.log('🏠 Homepage render - Auth state:', authState);
@@ -13,7 +13,7 @@ const Homepage = ({ authState }) => {
       <MatrixCursor />
       <main className="relative z-10">
         {authState?.isAuthenticated ? (
-          <UserDashboard user={authState.user} />
+          <Dashboard authState={authState} />
         ) : (
           <Hero />
         )}
