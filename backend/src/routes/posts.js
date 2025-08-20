@@ -14,7 +14,8 @@ router.use(authMiddleware);
 router.post('/', PostController.createPost);
 router.get('/', PostController.getAllPosts);
 router.get('/:id', PostController.getPostById);
-router.get('/view/:id', PostController.getPostForView); // New route for public post view
+router.get('/:id/like-status', PostController.getPostLikeStatus); // New route for like status
+router.get('/view/:id', PostController.getPostForView);
 router.put('/:id', PostController.updatePost);
 router.delete('/:id', PostController.deletePost);
 router.post('/:id/like', PostController.likePost);
