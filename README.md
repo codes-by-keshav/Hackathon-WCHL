@@ -82,7 +82,9 @@ Authentication Flow:
 
 ### Backend
 - **Runtime**: Node.js with Express.js
-- **Database**: User management and authentication
+- **Database**:
+      - User management and authentication
+      - Smart management for content like images that take up more storage space on severs by deleting images after 6 months if they don't get even a single view in those 6 months.
 - **APIs**: RESTful API design
 
 ### Post-Quantum Cryptography
