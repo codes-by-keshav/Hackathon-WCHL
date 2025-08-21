@@ -1,9 +1,10 @@
 # QuantaVerse 🚀
 
-**The World's First Quantum-Resistant Social Media Platform**
+# The World's First Quantum-Resistant & Sentimentally Aware Social Media Platform  
 
-QuantaVerse is a revolutionary social media platform built on the Internet Computer Protocol (ICP) blockchain that addresses the critical vulnerability of traditional blockchain systems to quantum computing attacks. While most blockchains claim security through cryptography, they rely on ECDSA which is vulnerable to quantum attacks. QuantaVerse fills this gap by implementing Post-Quantum Cryptography (PQC) algorithms.
+**QuantaVerse** is a revolutionary social media platform built on the Internet Computer Protocol (ICP) blockchain that addresses the critical vulnerability of traditional blockchain systems to quantum computing attacks. While most blockchains claim security through cryptography, they rely on ECDSA which is vulnerable to quantum attacks. QuantaVerse fills this gap by implementing **Post-Quantum Cryptography (PQC) algorithms**.  
 
+But QuantaVerse is not just about security - it's also **sentimentally aware**. Our advanced AI models analyze user interactions and content sentiment to ensure a healthier online environment.
 
 ## HomePage
 <img width="1920" height="1076" alt="Screenshot From 2025-07-25 01-27-28" src="https://github.com/user-attachments/assets/6e6e3829-e647-41a7-8e20-f2be3c1471da" />
@@ -24,17 +25,27 @@ QuantaVerse is a revolutionary social media platform built on the Internet Compu
 <img width="1377" height="850" alt="Screenshot 2025-08-22 014302" src="https://github.com/user-attachments/assets/f76230d2-a9e5-4788-ab80-bce8f529ea21" />
 
 
-## 🎯 Problem Statement
+## 🎯 Problem Statement  
 
-Current blockchain systems use ECDSA (Elliptic Curve Digital Signature Algorithm) which, while secure against classical computers, can be broken by sufficiently powerful quantum computers using Shor's algorithm. This poses a significant threat to the security of blockchain networks and user data.
+- Current blockchain systems use ECDSA (Elliptic Curve Digital Signature Algorithm) which, while secure against classical computers, can be broken by sufficiently powerful quantum computers using Shor's algorithm. This poses a significant threat to the security of blockchain networks and user data.  
 
-## 🛡️ Our Solution
+- At the same time, **major social media platforms** face a different but equally harmful problem - their recommendation algorithms are optimized for engagement, not well-being. If a user interacts with or likes a sad or depressing post, the system interprets it as a preference and floods their feed with similar negative content. This feedback loop can worsen **mental health**, trapping users in cycles of sadness or toxicity instead of promoting balanced, uplifting interactions.  
 
-QuantaVerse implements **Post-Quantum Cryptography** using:
-- **Kyber512**: For quantum-resistant key encapsulation
-- **Dilithium2**: For quantum-resistant digital signatures
 
-This ensures our platform remains secure even in the post-quantum era.
+## 🛡️ Our Solution  
+
+QuantaVerse implements **Post-Quantum Cryptography** using:  
+- **Kyber512**: For quantum-resistant key encapsulation  
+- **Dilithium2**: For quantum-resistant digital signatures  
+
+This ensures our platform remains secure even in the post-quantum era.  
+
+But security alone is not enough - **QuantaVerse is also sentimentally aware**. Our AI-driven models address the mental health issues caused by traditional engagement-based algorithms by:  
+- **Sentiment Analysis**: Detecting when users are engaging with too many sad or depressive posts and balancing their feed with uplifting, positive content.  
+- **Hate Speech Detection**: Identifying and filtering hateful or abusive content, even when expressed in **regional languages and slang**.  
+- **Bot & Spam Prevention**: Ensuring genuine, authentic user interactions by filtering out malicious accounts and spammy activity.  
+
+Together, these innovations make QuantaVerse both **quantum-secure** and **mentally healthier** than existing social platforms.  
 
 ## 🎥 Demo
 
@@ -46,48 +57,15 @@ This ensures our platform remains secure even in the post-quantum era.
 
 ## 🏗️ Architecture
 
-```
-┌──────────────────────────────────────────────────────────────────┐
-│                        QuantaVerse Platform                      │
-├──────────────────────────────────────────────────────────────────┤
-│                                                                  │
-│  ┌─────────────────┐    ┌──────────────────┐    ┌─────────────┐  │
-│  │   Web Browser   │    │   ICP Blockchain │    │   Backend   │  │
-│  │                 │    │                  │    │   Server    │  │
-│  │ ┌─────────────┐ │    │ ┌──────────────┐ │    │             │  │
-│  │ │Web Extension│ │    │ │   Frontend   │ │    │  ┌────────┐ │  │
-│  │ │             │ │    │ │   Canister   │ │    │  │Node.js │ │  │
-│  │ │┌───────────┐│ │    │ │              │ │    │  │Express │ │  │
-│  │ ││AES-256    ││ │    │ └──────────────┘ │    │  └────────┘ │  │
-│  │ ││Encrypted  ││ │    │                  │    │             │  │
-│  │ ││Private    ││ │    │                  │    │             │  │
-│  │ ││Keys       ││ │    │                  │    │             │  │
-│  │ │└───────────┘│ │    │                  │    │             │  │
-│  │ └─────────────┘ │    │                  │    │             │  │ 
-│  └─────────────────┘    └──────────────────┘    └─────────────┘  │ 
-│           │                       │                      │       │
-│           └───────────────────────┼──────────────────────┘       │
-│                                   │                              │
-│                                   ▼                              │
-│  ┌─────────────────────────────────────────────────────────────┐ │
-│  │                PQC Microservice (Python)                    │ │
-│  │                                                             │ │
-│  │  ┌─────────────┐              ┌─────────────────────────┐   │ │
-│  │  │   Flask     │              │       liboqs            │   │ │
-│  │  │   Server    │◄────────────►│                         │   │ │
-│  │  │             │              │  ┌─────────┐ ┌────────┐ │   │ │
-│  │  └─────────────┘              │  │Kyber512 │ │Dilithium2│   │ │ 
-│  │                               │  │   KEM   │ │   DSA  │ │   │ │
-│  │                               │  └─────────┘ └────────┘ │   │ │
-│  │                               └─────────────────────────┘   │ │
-│  └─────────────────────────────────────────────────────────────┘ │
-└──────────────────────────────────────────────────────────────────┘
+<img width="976" height="668" alt="QuantaVerse Platform" src="https://github.com/user-attachments/assets/526f20e0-8c01-4187-a28c-2ba93a8932c9" />
+
 
 Authentication Flow:
 1. User Registration → Generate PQC Keypairs → Store Private Keys (AES-256)
 2. User Login → Create Challenge → Sign with Private Key → Verify Signature
 3. Passwordless & Quantum-Resistant Authentication ✅
-```
+4. AI Models Monitor Content → Sentiment Balancing + Hate Speech Filtering + Bot Prevention
+
 
 ## 🔐 Passwordless Authentication Flow
 
