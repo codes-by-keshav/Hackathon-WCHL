@@ -134,11 +134,10 @@ Authentication Flow:
    git clone https://github.com/codes-by-keshav/Hackathon-WCHL.git
    ```
 
-2. **Deploy Frontend to ICP**
-    Navigate to `scripts` directory 
-   ```bash
-   ./deploy-icp-frontend.sh
-   ```
+2. **Install Browser Extension**
+   - Open your browser's extension management page
+   - Enable Developer Mode
+   - Load unpacked extension from the `extension/` directory
 
 3. **Setup Backend**
 (Should have MongoDD installed)
@@ -157,16 +156,19 @@ Authentication Flow:
    pip install -r requirements.txt
    python src/pqc_bridge.py
    ```
+5. **Deploy Frontend to ICP**
+    Navigate to `scripts` directory 
+   ```bash
+   ./deploy-icp-frontend.sh
+   ```
+   - The script will automatically install npm packages for frontend too no need to install them earlier.
 
-5. **Install Browser Extension**
-   - Open your browser's extension management page
-   - Enable Developer Mode
-   - Load unpacked extension from the `extension/` directory
 
 ### Usage
 1. Open the URL genrated upon deploying the frontend on ICP Blockchain or directly open `http://uxrrr-q7777-77774-qaaaq-cai.localhost:4943/`
 2. Now click on the installed browser extension icon to open it
 3. Register as a new User. After successfull registeration go back to Login screen in the extension and use your username/email to login.
+4. Browse your social media feed, interact and have fun.
 
 
 ## 👥 Team
@@ -178,10 +180,9 @@ Authentication Flow:
 
 ## 🔮 Future Roadmap
 
-### Phase 1: Enhanced User Experience
+### Phase 1: Enhanced User Experience (✅ Completed)
 - Complete user dashboard and social feed
-- Real-time messaging system
-- Content creation tools add monetization for creators
+- Content creation tools
 
 ### Phase 2: AI-Powered Features
 - **Sentiment Detection**: Promote positive content to users showing signs of negative sentiment patterns
