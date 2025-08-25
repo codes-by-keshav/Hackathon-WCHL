@@ -49,7 +49,7 @@ Together, these innovations make QuantaVerse both **quantum-secure** and **menta
 
 ## 🎥 Demo
 
-[![QuantaVerse Demo](https://img.shields.io/badge/Watch-Demo%20Video-red?style=for-the-badge&logo=youtube)]([https://youtu.be/1hvRx8BrWV8](https://www.youtube.com/watch?v=2oesUiYJtq0))
+[![QuantaVerse Demo](https://img.shields.io/badge/Watch-Demo%20Video-red?style=for-the-badge&logo=youtube)]([(https://www.youtube.com/watch?v=2oesUiYJtq0)])
 
 [![QuantaVerse PPT](https://img.shields.io/badge/View-Presentation-blue?style=for-the-badge&logo=microsoftpowerpoint)](https://docs.google.com/presentation/d/1xH5ez_PYmC9uwfU_s2NwZqnBChf1ilNv7WizVkC7yaA/edit?usp=sharing)
 
